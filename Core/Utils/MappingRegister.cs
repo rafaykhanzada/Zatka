@@ -12,8 +12,6 @@ namespace Core.Utils
             {
                 config.CreateMap<Role, RoleVM>().ReverseMap();
                 config.CreateMap<User, UserVM>().ReverseMap();
-                config.CreateMap<Permission, PermissionVM>().ReverseMap();
-                config.CreateMap<Branch, BranchVM>().ReverseMap();
 
             });
             return mappingConfig;

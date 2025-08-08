@@ -6,16 +6,16 @@ using System.Reflection;
 
 namespace Core.Data.DataContext
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<User,Role,string>
     {
         public ApplicationDbContext()
         { }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         { }
-        //public DbSet<Role> Role { get; set; }
+        public DbSet<Role> Role { get; set; }
         //public DbSet<ActivityLog> ActivityLog { get; set; }
-        //public DbSet<User> User { get; set; }
-        //public DbSet<RefreshToken> RefreshToken { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<RefreshToken> RefreshToken { get; set; }
         //public DbSet<Permission> Permission { get; set; }
         //public DbSet<Branch> Branch { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -28,10 +28,10 @@ namespace Core.Data.DataContext
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(builder);
-            //builder.Entity<Role>().ToTable($"tbl{nameof(Role)}");
+            builder.Entity<Role>().ToTable($"tbl{nameof(Role)}");
             //builder.Entity<ActivityLog>().ToTable($"tbl{nameof(ActivityLog)}");
-            //builder.Entity<User>().ToTable($"tbl{nameof(User)}");
-            //builder.Entity<RefreshToken>().ToTable($"tbl{nameof(RefreshToken)}");
+            builder.Entity<User>().ToTable($"tbl{nameof(User)}");
+            builder.Entity<RefreshToken>().ToTable($"tbl{nameof(RefreshToken)}");
             //builder.Entity<Permission>().ToTable($"tbl{nameof(Permission)}");
             //builder.Entity<Branch>().ToTable($"tbl{nameof(Branch)}");
         }

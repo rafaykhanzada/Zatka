@@ -145,7 +145,7 @@ namespace CDP.Infrastructure
             }
             #endregion
             #region Repository
-            services.AddScoped<IBranchRepository, BranchRepository>();
+            //services.AddScoped<IBranchRepository, BranchRepository>();
             #endregion
             #region Services
             services.AddScoped<ResultModel>();

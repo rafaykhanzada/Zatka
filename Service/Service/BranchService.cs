@@ -1,22 +1,17 @@
 ﻿using AutoMapper;
 using Core.Constant;
 using Core.Data.DTO;
-using Core.Data.Entities;
-using Core.Paging;
 using Core.Utils;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using Service.IService;
-using System.Linq.Expressions;
 using UnitofWork;
 
 namespace Service.Service
 {
-    public class BranchService(IUnitOfWork unitOfWork, ILogger<Branch> logger, IMapper mapper, ResultModel resultModel) : IBranchService
+    public class BranchService(IUnitOfWork unitOfWork, IMapper mapper, ResultModel resultModel) : IBranchService
     {
         public string UserId { get; set; }
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
-        private readonly ILogger<Branch> _logger = logger;
         private readonly IMapper _mapper = mapper;
         private readonly ResultModel _resultModel = resultModel;
        
@@ -177,7 +172,6 @@ namespace Service.Service
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error:", ex);
                 _resultModel.Success = false;
                 _resultModel.Data = new List<InvoiceVM>();
                 _resultModel.Message = ex.Message.ToString();

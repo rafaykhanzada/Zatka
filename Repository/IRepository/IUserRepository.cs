@@ -2,7 +2,7 @@
 
 namespace Repository.IRepository
 {
-    public interface IBranchRepository:IRepositoryBase<Branch>
+    public interface IUserRepository : IRepositoryBase<User>
     {
     }
 }

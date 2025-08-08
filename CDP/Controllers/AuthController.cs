@@ -23,13 +23,13 @@ namespace CDP.Controllers
         //    return Ok(await _authService.Register(model));
         //}
 
-        //[HttpPost("login")]
-        //public async Task<IActionResult> Login([FromBody] LoginVM model)
-        //{
-        //    if (!ModelState.IsValid)
-        //        return BadRequest(MessageString.ValidationError);
-        //    return Ok(await _authService.Login(model));
-        //}
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginVM model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(MessageString.ValidationError);
+            return Ok(await _authService.Login(model));
+        }
 
         //[HttpPost("refresh-token")]
         //public async Task<IActionResult> RefreshToken([FromBody] TokenRequestVM model)
@@ -38,7 +38,7 @@ namespace CDP.Controllers
         //        return BadRequest(MessageString.ValidationError);
         //    return Ok(await _authService.RefreshToken(model));
         //}
-        
+
         //[HttpPost("update-password")]
         //public async Task<IActionResult> ChangePassword([FromBody] AuthPasswordVM model)
         //{

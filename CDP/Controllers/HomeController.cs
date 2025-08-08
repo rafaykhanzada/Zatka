@@ -10,6 +10,7 @@ namespace CDP.Controllers
 {
     [Route("api/getinvoice")]
     [ApiController]
+    [Authorize]
     public class HomeController(IBranchService branchService) : ControllerBase
     {
         private readonly IBranchService _branchService = branchService;
