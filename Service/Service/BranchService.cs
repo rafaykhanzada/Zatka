@@ -126,15 +126,16 @@ namespace Service.Service
                     QtyUnit = (x[13] == DBNull.Value) ? "" : (string)x[13],
                     ShipToCustomer = (x[14] == DBNull.Value) ? "" : (string)x[14],
                     Truckinfo = (x[15] == DBNull.Value) ? "" : (string)x[15],
-
+                    InvoiceDate = (x[16] == DBNull.Value) ? null : (DateTime)x[16],
                 });
 
                 // Transform flat data into nested structure
                 var transformedData = data
-                    .GroupBy(x => new { x.InvoiceNo, x.Manufacture, x.Customer, x.Country, x.City, x.ShipToCustomer, x.Truckinfo })
+                    .GroupBy(x => new { x.InvoiceNo,x.InvoiceDate, x.Manufacture, x.Customer, x.Country, x.City, x.ShipToCustomer, x.Truckinfo })
                     .Select(invoiceGroup => new
                     {
                         InvoiceNo = invoiceGroup.Key.InvoiceNo,
+                        InvoiceDate = invoiceGroup.Key.InvoiceDate,
                         Manufacture = invoiceGroup.Key.Manufacture,
                         Customer = invoiceGroup.Key.Customer,
                         Country = invoiceGroup.Key.Country,
@@ -169,6 +170,73 @@ namespace Service.Service
                     _resultModel.Message = MessageString.Success;
                 else
                     _resultModel.Message = MessageString.NotFound;
+            }
+            catch (Exception ex)
+            {
+                _resultModel.Success = false;
+                _resultModel.Data = new List<InvoiceVM>();
+                _resultModel.Message = ex.Message.ToString();
+            }
+            return _resultModel;
+        }
+        public ResultModel Get(string InvoiceNo)
+        {
+            try
+            {
+
+                string query = "EXEC [usp_GetInvoiceFeedback]";
+                List<string> parameters = new List<string>();
+
+                if (!string.IsNullOrEmpty(InvoiceNo))
+                    parameters.Add($"@InvoiceNo = '{InvoiceNo}'");
+
+                if (parameters.Count > 0)
+                    query += " " + string.Join(", ", parameters);
+
+                var data = BaseUtil.RawSqlQuery<InvoiceFeedbackVM>(query, x => new InvoiceFeedbackVM
+                {
+                    InvoiceNo = (x[0] == DBNull.Value) ? "" : (string)x[0],
+                    FeedBackType = (x[1] == DBNull.Value) ? "" : (string)x[1],
+                    FeedBackText = (x[2] == DBNull.Value) ? "" : (string)x[2],
+                });
+                _resultModel.Success = true;
+                   _resultModel.Data = data;
+                if (data.Any())
+                    _resultModel.Message = MessageString.Success;
+                else
+                    _resultModel.Message = MessageString.NotFound;
+            }
+            catch (Exception ex)
+            {
+                _resultModel.Success = false;
+                _resultModel.Data = new List<InvoiceVM>();
+                _resultModel.Message = ex.Message.ToString();
+            }
+            return _resultModel;
+        }
+        public ResultModel Post(List<InvoiceFeedbackVM> model)
+        {
+            try
+            {
+                foreach (var item in model)
+                {
+                    string query = "EXEC [usp_AddInvoiceFeedback]";
+                    List<string> parameters = new List<string>();
+
+                    if (!string.IsNullOrEmpty(item.InvoiceNo))
+                        parameters.Add($"@InvoiceNo = '{item.InvoiceNo}'");
+                    if (!string.IsNullOrEmpty(item.FeedBackType))
+                        parameters.Add($"@FeedBackType = '{item.FeedBackType}'");
+                    if (!string.IsNullOrEmpty(item.FeedBackText))
+                        parameters.Add($"@FeedBackText = '{item.FeedBackText}'");
+
+                    if (parameters.Count > 0)
+                        query += " " + string.Join(", ", parameters);
+                    BaseUtil.RawSqlQuery(query);
+                    _resultModel.Success = true;
+                    _resultModel.Message = MessageString.Success;
+                    _resultModel.Data = model; 
+                }
             }
             catch (Exception ex)
             {

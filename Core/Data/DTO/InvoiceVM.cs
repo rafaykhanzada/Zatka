@@ -19,6 +19,8 @@
         public string? QtyUnit { get; set; }
         public string? ShipToCustomer { get; set; }
         public string? Truckinfo { get; set; }
+        public DateTime? InvoiceDate { get; set; }
+
     }
     public class InvoiceHeaderVM
     {

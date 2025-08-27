@@ -7,6 +7,8 @@ namespace Service.IService
     {
         public string UserId { get; set; }
         ResultModel Get(string? InvoiceNo, string? BatchNo, string? ShipTo, DateTime? FromDate=null, DateTime? ToDate=null);
+        ResultModel Get(string? InvoiceNo);
+        ResultModel Post(List<InvoiceFeedbackVM> model);
         //Task<ResultModel> GetType(int pageIndex, int pageSize, string? Search);
         //Task<int> GetCount();
         ////Task<ResultModel> Get(int pageIndex, int pageSize, FilterVM? model);

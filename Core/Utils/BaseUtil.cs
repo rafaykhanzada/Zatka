@@ -16,7 +16,19 @@ namespace Core.Utils
 {
     public static class BaseUtil
     {
-     
+        public static void RawSqlQuery(string query)
+        {
+            using (var context = new ApplicationDbContext())
+            using (var command = context.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = query;
+                command.CommandType = CommandType.Text;
+
+                context.Database.OpenConnection();
+                var result = command.ExecuteScalar();
+            }
+        }
+
         public static List<T> RawSqlQuery<T>(string query, Func<DbDataReader, T> map)
         {
             using (var context = new ApplicationDbContext())
